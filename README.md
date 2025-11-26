@@ -4,7 +4,8 @@
 
 Your mandate is simple but perilous: **Survive a 1200-day term** without crashing the economy or being ousted by a political coup.
 
-![Uploading image.png…]()
+<img width="2926" height="1476" alt="image" src="https://github.com/user-attachments/assets/b40a273a-85a3-4d4a-96c0-d4d274b93f00" />
+
 
 
 ## 🎯 Objective
