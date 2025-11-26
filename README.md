@@ -4,7 +4,8 @@
 
 Your mandate is simple but perilous: **Survive a 1200-day term** without crashing the economy or being ousted by a political coup.
 
-![Global Macro Screenshot](https://via.placeholder.com/800x450?text=Global+Macro+Simulation)
+![Uploading image.png…]()
+
 
 ## 🎯 Objective
 - **Survive:** Complete the full 1200-day term.
