@@ -121,6 +121,27 @@ class UIController {
             if (val > 50) val = 50;
             updateTariff(val);
         };
+
+        // QE / QT
+        const updateQE = (val) => {
+            this.engine.playerControls.assetPurchases = val;
+            document.getElementById('qe-val').textContent = val > 0 ? `+${val}` : val;
+            // Color code
+            const el = document.getElementById('qe-val');
+            if (val > 0) el.style.color = '#33ff33';
+            else if (val < 0) el.style.color = '#ff3333';
+            else el.style.color = '#fff';
+        };
+        document.getElementById('qt-btn').onclick = () => {
+            let val = this.engine.playerControls.assetPurchases - 10;
+            if (val < -200) val = -200; // Max QT
+            updateQE(val);
+        };
+        document.getElementById('qe-btn').onclick = () => {
+            let val = this.engine.playerControls.assetPurchases + 10;
+            if (val > 500) val = 500; // Max QE
+            updateQE(val);
+        };
     }
 
     updateSpeedDisplay() {
@@ -160,7 +181,7 @@ class UIController {
         this.charts.debt = new Chart(ctxDebt, { type: 'line', options: commonOptions, data: { labels: [], datasets: [] } });
         this.charts.fx = new Chart(ctxFX, {
             type: 'line',
-            options: { ...commonOptions, scales: { ...commonOptions.scales, y: { ...commonOptions.scales.y, type: 'logarithmic' } } },
+            options: commonOptions,
             data: { labels: [], datasets: [] }
         });
 
@@ -253,8 +274,67 @@ class UIController {
                 <span class="c-gdp" style="color: #888; font-size: 11px;">$${c.Y_nom.toFixed(1)}T</span>
                 <span class="c-stat ${gColor}">${c.g.toFixed(1)}%</span>
             `;
+
+            // Tooltip Events
+            row.onmouseenter = (e) => this.showTooltip(e, name, c);
+            row.onmouseleave = () => this.hideTooltip();
+            row.onmousemove = (e) => this.moveTooltip(e);
+
             grid.appendChild(row);
         });
+    }
+
+    showTooltip(e, name, c) {
+        const tooltip = document.getElementById('country-tooltip');
+        tooltip.classList.remove('hidden');
+
+        // Outlook Logic
+        let outlook = "Neutral";
+        let color = "#fff";
+        if (c.g > 2.5 && c.d < 100) { outlook = "Bullish"; color = "#00ff88"; }
+        else if (c.g < 0 || c.d > 120) { outlook = "Bearish"; color = "#ff3333"; }
+        else if (c.g > 4.0) { outlook = "Booming"; color = "#00ccff"; }
+
+        tooltip.innerHTML = `
+            <div class="tooltip-header">${name}</div>
+            <div class="tooltip-row">
+                <span class="tooltip-label">Outlook</span>
+                <span class="tooltip-val" style="color: ${color}">${outlook}</span>
+            </div>
+            <div class="tooltip-row">
+                <span class="tooltip-label">Real Growth</span>
+                <span class="tooltip-val">${c.g.toFixed(2)}%</span>
+            </div>
+            <div class="tooltip-row">
+                <span class="tooltip-label">Inflation</span>
+                <span class="tooltip-val">${c.pi.toFixed(2)}%</span>
+            </div>
+            <div class="tooltip-row">
+                <span class="tooltip-label">Debt / GDP</span>
+                <span class="tooltip-val">${c.d.toFixed(1)}%</span>
+            </div>
+            <div class="tooltip-row">
+                <span class="tooltip-label">Risk Premium</span>
+                <span class="tooltip-val">${c.rho.toFixed(2)}%</span>
+            </div>
+        `;
+
+        this.moveTooltip(e);
+    }
+
+    moveTooltip(e) {
+        const tooltip = document.getElementById('country-tooltip');
+        const x = e.clientX + 15;
+        const y = e.clientY + 15;
+
+        // Boundary check (simple)
+        tooltip.style.left = `${x}px`;
+        tooltip.style.top = `${y}px`;
+    }
+
+    hideTooltip() {
+        const tooltip = document.getElementById('country-tooltip');
+        tooltip.classList.add('hidden');
     }
 
     updateCharts() {
