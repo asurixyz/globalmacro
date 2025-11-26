@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&family=Playfair+Display:wght@400;700&display=swap"
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <div class="chart-box">
-                    <h4>FX / USD (Log)</h4>
+                    <h4>FX / USD</h4>
                     <div class="canvas-container">
                         <canvas id="fx-chart"></canvas>
                     </div>
@@ -118,6 +118,15 @@
                             <button class="btn-control" id="rate-down">-</button>
                             <span id="rate-val" class="control-val">0</span>
                             <button class="btn-control" id="rate-up">+</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>ASSET PURCHASES ($B/mo)</label>
+                        <div class="control-row">
+                            <button class="btn-control" id="qt-btn" style="color: #ff3333;">QT 10B</button>
+                            <span id="qe-val" class="control-val">0</span>
+                            <button class="btn-control" id="qe-btn" style="color: #33ff33;">QE 10B</button>
                         </div>
                     </div>
 
@@ -176,6 +185,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Tooltip -->
+    <div id="country-tooltip" class="tooltip hidden"></div>
 
     <script src="engine.js"></script>
     <script src="ui.js"></script>
