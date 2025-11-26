@@ -40,7 +40,8 @@ class MacroEngine {
             rateOverride: 0.0,    // Basis points or percentage points added to target
             fiscalBalance: 0.0,   // Target Primary Balance % GDP
             tariffLevel: 5.0,     // Average tariff rate %
-            intervention: 0.0     // FX intervention intensity
+            intervention: 0.0,    // FX intervention intensity
+            assetPurchases: 0.0   // QE (+) / QT (-) in $B/mo
         };
 
         // Data History for Charts (Circular buffers or decimated arrays)
@@ -84,7 +85,7 @@ class MacroEngine {
                 debt_limit: 100, fiscal_mult: 0.4
             },
             'India': {
-                Y_nom: 3.57, Y_real: 4.13, g: 6.5, pi: 5.0, i: 6.5, s: 83.0, d: 82, q: 100, rho: 1.5, sigma: 0.2,
+                Y_nom: 4.13, Y_real: 3.57, g: 6.5, pi: 5.0, i: 6.5, s: 83.0, d: 82, q: 100, rho: 1.5, sigma: 0.2,
                 Y_pot_growth: 6.5, pi_target: 4.0, r_star: 2.0,
                 a: 0.2, b: 0.3, c: 0.1,
                 phi: 0.4, kappa: 0.2, eta: 0.2,
@@ -92,7 +93,7 @@ class MacroEngine {
                 debt_limit: 90, fiscal_mult: 0.7
             },
             'Japan': {
-                Y_nom: 4.20, Y_real: 4.61, g: 1.0, pi: 1.0, i: 0.1, s: 150.0, d: 250, q: 100, rho: 0.1, sigma: 0.05,
+                Y_nom: 4.61, Y_real: 4.20, g: 1.0, pi: 1.0, i: 0.1, s: 150.0, d: 250, q: 100, rho: 0.1, sigma: 0.05,
                 Y_pot_growth: 0.8, pi_target: 2.0, r_star: -0.5,
                 a: 0.1, b: 0.2, c: 0.1,
                 phi: 0.1, kappa: 0.05, eta: 0.15,
@@ -156,6 +157,7 @@ class MacroEngine {
             this.playerControls.rateOverride = 0;
             this.playerControls.fiscalBalance = -2.0; // Default deficit
             this.playerControls.tariffLevel = 5.0;
+            this.playerControls.assetPurchases = 0.0; // Default no QE
         }
     }
 
@@ -344,8 +346,20 @@ class MacroEngine {
         const risk_local = Math.min(20.0, 0.02 * debt_excess);
         const risk_global = (name === 'United States') ? 0 : g.chi * 1.0;
 
-        const target_rho = risk_local + risk_global + c.sigma;
+        // QE / QT Effect on Spread
+        // QE (positive purchases) reduces spread (portfolio rebalancing)
+        // QT (negative purchases) increases spread
+        let qe_spread_effect = 0;
+        if (name === this.playerCountry) {
+            // INCREASED SENSITIVITY
+            // $10B/mo QE ~= -5bps spread effect
+            // $100B/mo ~= -50bps
+            qe_spread_effect = -(this.playerControls.assetPurchases / 10) * 0.05;
+        }
+
+        const target_rho = risk_local + risk_global + c.sigma + qe_spread_effect;
         c.rho += 0.2 * (target_rho - c.rho) * dt;
+        c.rho = Math.max(0, c.rho); // Spread cannot be negative (usually)
 
 
         // 6. FX (UIP + Valuation)
@@ -373,7 +387,15 @@ class MacroEngine {
 
 
         // 7. Asset Prices (Equity)
-        const equity_return = 0.05 + 1.0 * (c.g - c.Y_pot_growth) / 100 - 0.5 * (c.i - c.pi) / 100 - 0.5 * c.rho / 100;
+        // QE boosts equities directly (Portfolio Balance Channel)
+        let qe_equity_effect = 0;
+        if (name === this.playerCountry) {
+            // INCREASED SENSITIVITY
+            // $10B/mo QE ~= +1% annualized equity return boost
+            qe_equity_effect = (this.playerControls.assetPurchases / 10) * 0.01;
+        }
+
+        const equity_return = 0.05 + 1.0 * (c.g - c.Y_pot_growth) / 100 - 0.5 * (c.i - c.pi) / 100 - 0.5 * c.rho / 100 + qe_equity_effect;
         const vol_q = 0.15 + 0.5 * g.chi;
 
         c.q *= (1 + equity_return * dt_years + vol_q * this.randn() * Math.sqrt(dt_years));
@@ -488,7 +510,11 @@ class MacroEngine {
     }
 
     // Control Methods
-    start() { this.running = true; this.loop(); }
+    start() {
+        this.running = true;
+        this.lastFrame = performance.now(); // Reset to prevent jump
+        this.loop();
+    }
     pause() { this.running = false; }
     setSpeed(s) { this.speed = s; }
 
