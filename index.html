@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Macro Engine</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+    <div class="scanline"></div>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-left">
+                <h1>GLOBAL MACRO</h1>
+                <div class="ticker-box">
+                    <span class="ticker-label">OIL</span>
+                    <span id="oil-price" class="ticker-value">$80.00</span>
+                    <span class="ticker-sep">|</span>
+                    <span class="ticker-label">RISK</span>
+                    <span id="global-risk" class="ticker-value">0.00</span>
+                    <span class="ticker-sep">|</span>
+                    <span class="ticker-label">US 10Y</span>
+                    <span id="world-rate" class="ticker-value">4.00%</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="date-display">
+                    <span id="current-date">Day 0</span>
+                </div>
+                <div class="player-badge">
+                    Managing: <strong id="player-country">...</strong>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Left: Market Monitor (Countries) -->
+            <div class="panel countries-panel">
+                <h3>MARKET MONITOR</h3>
+                <div class="panel-content">
+                    <div id="country-grid" class="country-grid"></div>
+                </div>
+            </div>
+
+            <!-- Center: Terminal (Charts) -->
+            <div class="panel charts-panel">
+                <div class="chart-box">
+                    <h4>GDP GROWTH (%)</h4>
+                    <div class="canvas-container">
+                        <canvas id="gdp-chart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <h4>INFLATION (%)</h4>
+                    <div class="canvas-container">
+                        <canvas id="inflation-chart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <h4>DEBT / GDP (%)</h4>
+                    <div class="canvas-container">
+                        <canvas id="debt-chart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <h4>FX / USD (Log)</h4>
+                    <div class="canvas-container">
+                        <canvas id="fx-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Command Center (Controls & Events) -->
+            <div class="panel controls-panel">
+                <h3>COMMAND CENTER</h3>
+
+                <div class="player-dashboard">
+                    <div class="dash-row">
+                        <span class="dash-label">REPUTATION</span>
+                        <span id="player-reputation" class="dash-value" style="color: var(--primary);">50%</span>
+                    </div>
+                    <div class="dash-row">
+                        <span class="dash-label">REAL GDP</span>
+                        <span id="player-real-gdp" class="dash-value">$0.00 T</span>
+                    </div>
+                    <div class="dash-row">
+                        <span class="dash-label">NOMINAL GDP</span>
+                        <span id="player-nom-gdp" class="dash-value">$0.00 T</span>
+                    </div>
+                    <div class="dash-row">
+                        <span class="dash-label">GROWTH</span>
+                        <span id="player-growth" class="dash-value">0.0%</span>
+                    </div>
+                    <div class="dash-row">
+                        <span class="dash-label">INFLATION</span>
+                        <span id="player-inflation" class="dash-value">0.0%</span>
+                    </div>
+                    <div class="dash-row">
+                        <span class="dash-label">DEBT / GDP</span>
+                        <span id="player-debt" class="dash-value">0.0%</span>
+                    </div>
+                </div>
+
+                <div class="policy-controls">
+                    <div class="control-group">
+                        <label>RATE OVERRIDE (bps)</label>
+                        <div class="control-row">
+                            <button class="btn-control" id="rate-down">-</button>
+                            <span id="rate-val" class="control-val">0</span>
+                            <button class="btn-control" id="rate-up">+</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>FISCAL BALANCE (% GDP)</label>
+                        <div class="control-row">
+                            <button class="btn-control" id="fiscal-down">-</button>
+                            <span id="fiscal-val" class="control-val">-2.0</span>
+                            <button class="btn-control" id="fiscal-up">+</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>TARIFF LEVEL (%)</label>
+                        <div class="control-row">
+                            <button class="btn-control" id="tariff-down">-</button>
+                            <span id="tariff-val" class="control-val">5</span>
+                            <button class="btn-control" id="tariff-up">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="events-section">
+                    <h4>NEWS WIRE</h4>
+                    <div id="events-list" class="events-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Controls -->
+        <div class="bottom-bar">
+            <div class="playback-controls">
+                <button id="start-btn" class="btn-primary">START</button>
+                <button id="pause-btn" class="btn-secondary">PAUSE</button>
+            </div>
+            <div class="credits">
+                Made by <a href="https://github.com/asurixyz" target="_blank">Venkatakrishnan Asuri</a>
+                <span style="margin: 0 10px; color: var(--border);">|</span>
+                <a href="guide.html" target="_blank">Operator's Manual</a>
+            </div>
+            <div class="speed-controls">
+                <button id="speed-down" class="btn-icon">-</button>
+                <span id="speed-display">SPEED: 1.0x</span>
+                <button id="speed-up" class="btn-icon">+</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Country Selection Modal -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Select Your Sovereign</h2>
+            <p>Choose the nation you will guide through the turbulent tides of the global economy.</p>
+            <div id="country-select-grid" class="country-select-grid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="engine.js"></script>
+    <script src="ui.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>

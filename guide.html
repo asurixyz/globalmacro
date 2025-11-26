@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operator's Manual - Global Macro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --text: #e0e0e0;
+            --primary: #00ff88;
+            --secondary: #ff3333;
+            --border: #333;
+            --font-header: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: var(--font-header);
+            color: var(--primary);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            margin-top: 40px;
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            color: #fff;
+            margin-top: 25px;
+        }
+
+        code {
+            font-family: var(--font-mono);
+            background: #222;
+            padding: 2px 5px;
+            border-radius: 3px;
+            color: var(--primary);
+        }
+
+        .alert {
+            border: 1px solid var(--secondary);
+            background: rgba(255, 51, 51, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .tip {
+            border: 1px solid var(--primary);
+            background: rgba(0, 255, 136, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        footer {
+            margin-top: 60px;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>OPERATOR'S MANUAL</h1>
+    <p><strong>Clearance Level:</strong> Governor</p>
+    <p><strong>Subject:</strong> Mandate Objectives & Protocols</p>
+
+    <h2>1. The Objective</h2>
+    <p>Your mandate is simple but perilous: <strong>Survive a 1200-day term</strong> as the central governor of a major
+        economy.</p>
+    <p>You begin with <strong>50% Reputation</strong>. This is your political capital. If it falls to
+        <strong>0%</strong>, you will be ousted in a coup. If you survive to Day 1200, you retire a legend.
+    </p>
+
+    <div class="alert">
+        <strong>WARNING:</strong> Reputation decays rapidly if:
+        <ul>
+            <li>Inflation exceeds 5%</li>
+            <li>Growth turns negative (Recession)</li>
+            <li>Debt-to-GDP exceeds 100%</li>
+        </ul>
+    </div>
+
+    <h2>2. The Controls</h2>
+    <p>You have three primary levers to pull. Use them wisely.</p>
+
+    <h3>Policy Rate (Interest Rates)</h3>
+    <p>The cost of borrowing money. Raising rates cools down inflation but hurts growth. Lowering rates stimulates
+        growth but risks inflation.</p>
+    <ul>
+        <li><strong>Raise Rates:</strong> To fight high inflation or defend your currency.</li>
+        <li><strong>Cut Rates:</strong> To fight a recession or stimulate demand.</li>
+    </ul>
+
+    <h3>Fiscal Balance</h3>
+    <p>Government spending relative to tax revenue. A deficit (negative number) stimulates the economy but adds to the
+        debt pile.</p>
+    <ul>
+        <li><strong>Deficit Spending (-):</strong> Boosts growth immediately. Increases debt.</li>
+        <li><strong>Surplus (+):</strong> Pays down debt. Drags on growth.</li>
+    </ul>
+
+    <h3>Tariffs</h3>
+    <p>Taxes on imports. High tariffs can improve your trade balance (Net Exports) but may invite retaliation and hurt
+        global trade efficiency.</p>
+
+    <h2>3. Key Indicators</h2>
+    <ul>
+        <li><strong>GDP Growth:</strong> The heartbeat of your economy. Keep it positive (>2% is ideal).</li>
+        <li><strong>Inflation:</strong> The silent killer. Keep it stable between 1% and 3%.</li>
+        <li><strong>Debt / GDP:</strong> The burden on future generations. Keep it under 100% to avoid a crisis.</li>
+        <li><strong>FX Rate:</strong> The value of your currency. A crash can lead to imported inflation.</li>
+    </ul>
+
+    <div class="tip">
+        <strong>PRO TIP:</strong> Markets are volatile. Shocks (Oil spikes, Panic) will happen. Do not overreact to
+        every blip. Steady hands win the mandate.
+    </div>
+
+    <footer>
+        Global Macro | Developed by Venkatakrishnan Asuri
+    </footer>
+</body>
+
+</html>
